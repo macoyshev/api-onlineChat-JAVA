@@ -3,6 +3,7 @@ package com.macoyshev.restAPI.api.controllers;
 
 import com.macoyshev.restAPI.api.convertors.UserDtoConvertor;
 import com.macoyshev.restAPI.api.dto.UserDto;
+import com.macoyshev.restAPI.api.exceptions.BadRequestException;
 import com.macoyshev.restAPI.store.entities.UserEntity;
 import com.macoyshev.restAPI.store.repositories.UserRepository;
 import lombok.AccessLevel;
@@ -30,7 +31,14 @@ public class UserController {
     }
 
     @PostMapping(CREATE)
-    public UserDto create(@RequestParam String name){
+    public UserDto create(@RequestParam String name) {
+
+      repository
+        .findByName(name)
+        .ifPresent(user -> {
+          throw new BadRequestException(String.format("Project %s already exists", name));
+        });
+
       UserEntity user = repository.saveAndFlush(
         UserEntity.builder()
           .name(name)
