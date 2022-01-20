@@ -26,7 +26,7 @@ public class UserController {
     @GetMapping(FETCH)
     public List<UserDto> fetch() {
         List<UserEntity> entities = repository.findAll();
-
+        
         return convertor.makeUserDto(entities);
     }
 
