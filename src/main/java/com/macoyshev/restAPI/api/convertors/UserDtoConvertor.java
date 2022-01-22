@@ -16,7 +16,6 @@ public class UserDtoConvertor {
         return UserDto.builder()
                 .id(entity.getId())
                 .name(entity.getName())
-                .age(entity.getAge())
                 .build();
     }
 
