@@ -23,6 +23,12 @@ public class UserController {
     public static final String CREATE = "/api/users";
     public static final String DELETE = "/api/users/{id}";
 
+    //Test function TODO# delete this one
+    @GetMapping("/hello")
+    public String hello() {
+      return "Hello world";
+    }
+
     @GetMapping(FETCH)
     public List<UserDto> fetch() {
         List<UserEntity> entities = repository.findAll();
