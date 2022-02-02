@@ -3,12 +3,10 @@ package com.macoyshev.restAPI.security.jwt;
 import com.macoyshev.restAPI.security.services.MyUserDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+
 
 import java.net.Authenticator;
 
-
-@Component
 public class JwtUtil {
   private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
 
