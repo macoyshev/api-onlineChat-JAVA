@@ -22,6 +22,7 @@ public class UserController {
     public static final String FETCH = "/api/users";
     public static final String CREATE = "/api/users";
     public static final String DELETE = "/api/users/{id}";
+    public static final String GET = "/api/users/{id}";
 
     //Test function TODO# delete this one
     @GetMapping("/hello")
@@ -57,5 +58,15 @@ public class UserController {
     @DeleteMapping(DELETE)
     public void delete(@PathVariable("id") Long id) {
         repository.deleteById(id);
+    }
+
+    @GetMapping(GET)
+    public UserDto getOne(@PathVariable("id") Long id) {
+      UserEntity user = repository.findById(id)
+        .orElseThrow(() -> {
+          throw new BadRequestException("User not found, id: " + id);
+        });
+
+      return convertor.makeUserDto(user);
     }
 }

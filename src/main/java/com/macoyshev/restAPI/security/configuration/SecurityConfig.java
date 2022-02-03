@@ -1,7 +1,10 @@
-package com.macoyshev.restAPI.configuration;
+package com.macoyshev.restAPI.security.configuration;
 
+import com.macoyshev.restAPI.store.entities.Permission;
+import com.macoyshev.restAPI.store.entities.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -21,8 +24,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     http
       .csrf().disable()
       .authorizeRequests()
-      .antMatchers("/login").permitAll()
-      .antMatchers("/api/**").hasRole("ADMIN")
+      .antMatchers(HttpMethod.GET,"/api/**").hasAuthority(Permission.USER_READ.getPermission())
+      .antMatchers(HttpMethod.POST,"/api/**").hasAuthority(Permission.USER_WRITE.getPermission())
+      .antMatchers(HttpMethod.DELETE,"/api/**").hasAuthority(Permission.USER_WRITE.getPermission())
       .anyRequest().authenticated()
       .and()
       .httpBasic();
@@ -35,7 +39,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       User.builder()
         .username("admin")
         .password(passwordEncoder().encode("admin"))
-        .roles("ADMIN")
+        .authorities(Role.ADMIN.getAuthorities())
+        .build(),
+
+      User.builder()
+        .username("user")
+        .password(passwordEncoder().encode("user"))
+        .authorities(Role.USER.getAuthorities())
         .build()
     );
   }

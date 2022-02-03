@@ -21,7 +21,7 @@ public class RoleEntity {
 
   @Enumerated(EnumType.STRING)
   @Column(length = 20)
-  ERole role;
+  Role role;
 
   @ManyToMany(mappedBy = "roles")
   Set<UserEntity> users = new HashSet<>();
