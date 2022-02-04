@@ -28,7 +28,9 @@ dependencies {
 
 //dev dependencies
 dependencies {
-	// https://mvnrepository.com/artifact/org.postgresql/postgresql
+  // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-thymeleaf
+  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '2.6.3'
+  // https://mvnrepository.com/artifact/org.postgresql/postgresql
 	implementation group: 'org.postgresql', name: 'postgresql', version: '42.3.1'
 // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.6.2'

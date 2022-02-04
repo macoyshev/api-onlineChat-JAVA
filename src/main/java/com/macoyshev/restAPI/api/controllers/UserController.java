@@ -10,12 +10,15 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
 import java.util.List;
 
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 @RestController
 public class UserController {
+
     UserRepository repository;
     UserDtoConvertor convertor;
 
@@ -23,12 +26,6 @@ public class UserController {
     public static final String CREATE = "/api/users";
     public static final String DELETE = "/api/users/{id}";
     public static final String GET = "/api/users/{id}";
-
-    //Test function TODO# delete this one
-    @GetMapping("/hello")
-    public String hello() {
-      return "Hello world";
-    }
 
     @GetMapping(FETCH)
     public List<UserDto> fetch() {
