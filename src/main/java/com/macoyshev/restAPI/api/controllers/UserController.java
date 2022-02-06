@@ -10,7 +10,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -36,7 +35,6 @@ public class UserController {
 
     @PostMapping(CREATE)
     public UserDto create(@RequestParam String name) {
-
       repository
         .findByName(name)
         .ifPresent(user -> {

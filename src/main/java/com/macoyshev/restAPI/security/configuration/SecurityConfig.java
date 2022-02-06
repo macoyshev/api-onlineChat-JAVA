@@ -23,21 +23,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http
-      .csrf().disable()
-      .authorizeRequests()
-      .antMatchers(HttpMethod.GET,"/api/**").hasAuthority(Permission.USER_READ.getPermission())
-      .antMatchers(HttpMethod.POST,"/api/**").hasAuthority(Permission.USER_WRITE.getPermission())
-      .antMatchers(HttpMethod.DELETE,"/api/**").hasAuthority(Permission.USER_WRITE.getPermission())
-      .anyRequest().authenticated()
-      .and()
-      .formLogin()
-      .defaultSuccessUrl("/auth/success")
-      .and()
-      .logout()
-      .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "POST"))
-      .invalidateHttpSession(true)
-      .clearAuthentication(true)
-      .deleteCookies("JSESSIONID");
+            .csrf()
+            .disable()
+            .authorizeRequests()
+            .antMatchers(HttpMethod.GET, "/api/**").hasAuthority(Permission.USER_READ.getPermission())
+            .antMatchers(HttpMethod.POST, "/api/**").hasAuthority(Permission.USER_WRITE.getPermission())
+            .antMatchers(HttpMethod.DELETE, "/api/**").hasAuthority(Permission.USER_WRITE.getPermission())
+            .anyRequest().authenticated()
+            .and()
+            .formLogin()
+            .defaultSuccessUrl("/auth/success")
+            .and()
+            .logout()
+            .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "POST"))
+            .invalidateHttpSession(true)
+            .clearAuthentication(true)
+            .deleteCookies("JSESSIONID");
   }
 
   @Bean
