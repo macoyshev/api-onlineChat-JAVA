@@ -2,16 +2,15 @@ package com.macoyshev.restAPI.security.services;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.macoyshev.restAPI.store.entities.UserEntity;
-import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
 
-public class MyUserDetail implements UserDetails {
+
+public class MainUserDetails implements UserDetails {
+
   private static final long serialVersionUID = 1L;
 
   private Long id;
@@ -21,25 +20,24 @@ public class MyUserDetail implements UserDetails {
   @JsonIgnore
   private String password;
 
-  private Collection<? extends GrantedAuthority> authorities;
+  private final Collection<? extends GrantedAuthority> authorities;
 
-  public MyUserDetail(Long id, String name, String password, Collection<? extends GrantedAuthority> authorities) {
+  private MainUserDetails(Long id, String name, String password, Collection<? extends GrantedAuthority> authorities) {
     this.id = id;
     this.name = name;
     this.password = password;
     this.authorities = authorities;
   }
 
-  public static MyUserDetail build(UserEntity user) {
-    List<GrantedAuthority> authorities = user.getRoles().stream()
-      .map(role -> new SimpleGrantedAuthority(role.getRole().name()))
-      .collect(Collectors.toList());
-
-    return new MyUserDetail(
-      user.getId(),
-      user.getName(),
-      user.getPassword(),
-      authorities
+  public static MainUserDetails build(UserEntity user) {
+    return new MainUserDetails(
+            user.getId(),
+            user.getName(),
+            user.getPassword(),
+            user.getRoles().stream()
+                    .map(roleEntity -> roleEntity.getRole().getAuthorities())
+                    .flatMap(Collection::stream)
+                    .collect(Collectors.toSet())
     );
   }
 
@@ -77,4 +75,5 @@ public class MyUserDetail implements UserDetails {
   public boolean isEnabled() {
     return true;
   }
+
 }

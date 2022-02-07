@@ -1,6 +1,5 @@
 package com.macoyshev.restAPI.security.jwt;
 
-import com.macoyshev.restAPI.security.services.MyUserDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
