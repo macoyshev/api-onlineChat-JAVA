@@ -1,10 +1,14 @@
 package com.macoyshev.restAPI.security.configuration;
 
+import com.macoyshev.restAPI.security.services.MainUserDetailService;
 import com.macoyshev.restAPI.store.entities.Permission;
 import com.macoyshev.restAPI.store.entities.Role;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -16,9 +20,17 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
+@AllArgsConstructor
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+  private MainUserDetailService mainUserDetailService;
+
+  @Override
+  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    auth.authenticationProvider(daoAuthenticationProvider());
+  }
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
@@ -41,26 +53,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .deleteCookies("JSESSIONID");
   }
 
-  @Bean
-  @Override
-  protected UserDetailsService userDetailsService() {
-    return new InMemoryUserDetailsManager(
-      User.builder()
-        .username("admin")
-        .password(passwordEncoder().encode("admin"))
-        .authorities(Role.ADMIN.getAuthorities())
-        .build(),
-
-      User.builder()
-        .username("user")
-        .password(passwordEncoder().encode("user"))
-        .authorities(Role.USER.getAuthorities())
-        .build()
-    );
-  }
 
   @Bean
   protected PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder(10);
+  }
+
+  @Bean
+  protected DaoAuthenticationProvider daoAuthenticationProvider() {
+    DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+    daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+    daoAuthenticationProvider.setUserDetailsService(mainUserDetailService);
+
+    return daoAuthenticationProvider;
   }
 }

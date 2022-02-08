@@ -29,11 +29,6 @@ public class UserEntity {
 
     String password;
 
-    @ManyToMany
-    @JoinTable(
-      name = "user_role",
-      joinColumns = @JoinColumn(name = "user_id"),
-      inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    Set<RoleEntity> roles = new HashSet<>();
+    @Enumerated(EnumType.STRING)
+    Role role;
 }

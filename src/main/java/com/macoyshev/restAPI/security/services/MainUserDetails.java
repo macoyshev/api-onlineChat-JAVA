@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.macoyshev.restAPI.store.entities.UserEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 
 public class MainUserDetails implements UserDetails {
@@ -34,10 +34,7 @@ public class MainUserDetails implements UserDetails {
             user.getId(),
             user.getName(),
             user.getPassword(),
-            user.getRoles().stream()
-                    .map(roleEntity -> roleEntity.getRole().getAuthorities())
-                    .flatMap(Collection::stream)
-                    .collect(Collectors.toSet())
+            user.getRole().getAuthorities()
     );
   }
 
