@@ -1,3 +1,3 @@
 # api-onlineChat-JAVA
 
-api char with authorization 
+api chat with authorization 
